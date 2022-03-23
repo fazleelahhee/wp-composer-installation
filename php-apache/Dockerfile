@@ -8,6 +8,9 @@ RUN docker-php-ext-configure gd --with-webp --with-jpeg \
      --with-xpm --with-freetype
 
 RUN docker-php-ext-install gd
+# Install Composer
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+
 RUN a2enmod rewrite
 RUN a2enmod ssl
 RUN service apache2 restart
