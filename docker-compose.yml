@@ -1,0 +1,46 @@
+version: '3'
+services:
+    wordpress-php-apache:
+        build:
+            context: ./php-apache
+        container_name: wordpress-php-apache
+        ports:
+            - 8888:80
+            - 4438:443
+        volumes:
+            - "./:/var/www"
+            - "./web:/var/www/html"
+        links:
+            - 'wordpress-mysql'
+            # - 'wordpress-redis'
+        networks:
+          - wp
+    wordpress-mysql:
+        image: mariadb:10.4
+        container_name: wordpress-mysql
+        restart: always
+        volumes:
+            - mariadb:/var/lib/mysql
+        ports:
+            - "6606:3306" 
+        environment:
+            MYSQL_ALLOW_EMPTY_PASSWORD: "no"
+            MYSQL_ROOT_PASSWORD: "root"
+            MYSQL_USER: 'admin'
+            MYSQL_PASSWORD: 'pass'
+            MYSQL_DATABASE: 'wordpress'
+        networks:
+            - wp
+    # wordpress-redis:
+    #     image: redis:6.0.6-alpine
+    #     container_name: wordpress-redis
+    #     ports:
+    #         - "6379:6379" 
+    #     networks:
+    #       - wp
+
+networks:
+  wp: {}
+
+volumes:
+    mariadb:
