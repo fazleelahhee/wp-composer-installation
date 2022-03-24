@@ -1,0 +1,1 @@
+docker exec -it wordpress-php-apache /bin/bash
